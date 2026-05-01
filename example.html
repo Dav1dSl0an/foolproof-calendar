@@ -4,35 +4,81 @@
 <head>
 
     <title>Calendar Widget Example</title>
+    <style>
+        #calendar-services {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .service-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #333;
+            width: 100px;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            transition: background 0.3s;
+        }
+
+        .service-link:hover {
+            background: #e9e9e9;
+        }
+
+        .service-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .service-label {
+            margin-top: 8px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-    <button id="my-btn" class="my-fancy-button">Save the date 📅</button>
+    <div id="calendar-services">
+        <a id="google" class="service-link" href="#" target="_blank">
+            <img id="google-img" class="service-icon" src="" alt="Google Calendar">
+            <span class="service-label">Google Calendar</span>
+        </a>
+        <a id="outlookcom" class="service-link" href="#" target="_blank">
+            <img id="outlookcom-img" class="service-icon" src="" alt="Outlook.com Calendar">
+            <span class="service-label">Outlook.com Calendar</span>
+        </a>
+        <a id="ical" class="service-link" href="#" target="_blank">
+            <img id="ical-img" class="service-icon" src="" alt="iCal">
+            <span class="service-label">Apple iCal</span>
+        </a>
+        <a id="yahoo" class="service-link" href="#" target="_blank">
+            <img id="yahoo-img" class="service-icon" src="" alt="Yahoo Calendar">
+            <span class="service-label">Yahoo Calendar</span>
+        </a>
+        <a id="outlook" class="service-link" href="#" target="_blank">
+            <img id="outlook-img" class="service-icon" src="" alt="Outlook Calendar">
+            <span class="service-label">Outlook Calendar</span>
+        </a>
+    </div>
 
-    <a id="button-RAA5wadvjj_btn" href="" target="" data-animation-class=""
-        class="cbutton-RAA5wadvjj express-cta-button custom btn-vp button-hp-40 text-center" style=""
-        aria-label="Join us and book the next call into your calendar here ">
-        <span style="" class="main-heading-group">
-            <span style="margin-right:5px;" class="button-icon-start"></span>
-            <span class="main-heading-button">Join us
-                and book the next call into your
-                calendar here</span>
-            <span style="margin-left:5px;" class="button-icon-end"></span>
-        </span>
-        <!---->
-    </a>
     <script type="module">
-        import { createCalendar } from './foolproof-calendar.js';
-        import { getNextMeeting } from './foolproof-calendar.js';
-        import { convertString } from './foolproof-calendar.js';
+        import { createCalendar, getNextMeeting, convertString, ICONS } from './foolproof-calendar-mcd.js';
 
         const TIMEZONE = "America/New_York";
         const MEETING_DAY = 4;     // Thursday
         const MEETING_HOUR = 12;   // 12 PM
-        const DURATION_HOURS = 2;  // 2 hours
+        const DURATION_HOURS = 1;  // 1 hour
 
         const meeting = getNextMeeting(TIMEZONE, MEETING_DAY, MEETING_HOUR, DURATION_HOURS);
-        const widget = createCalendar({
+        const services = createCalendar({
             data: {
                 title: 'WeeklyTraining Call',
                 start: new Date(convertString(meeting.start.toString())),
@@ -41,15 +87,48 @@
                 address: '123 fake street',
                 url: 'https://example.com',
                 timezone: 'America/New_York',
-            },
-            options: {
-                id: 'my-calendar', //will use this if creatng a button
-                class: 'my-custom-class', //will use this if creatng a button
-                button: document.getElementById('button-RAA5wadvjj_btn') //pass an existing button to turn it into a calendar button
-            },
+            }
         });
 
-        document.body.appendChild(widget);
+        services.map(service => {
+            switch (service.key) {
+                case 'google':
+                    console.log('Google Calendar URL:', service.href);
+                    document.getElementById('google').href = service.href;
+                    document.getElementById('google-img').src =
+                        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(ICONS.google);
+                    break;
+                case 'outlook':
+                    console.log('Outlook Calendar URL:', service.href);
+                    document.getElementById('outlook').href = service.href;
+                    document.getElementById('outlook-img').src =
+                        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(ICONS.outlook);
+                    break;
+                case 'ical':
+                    console.log('iCal Download URL:', service.href);
+                    document.getElementById('ical').href = service.href;
+                    document.getElementById('ical-img').src =
+                        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(ICONS.ical);
+                    break;
+                case 'yahoo':
+                    console.log('Yahoo Calendar URL:', service.href);
+                    document.getElementById('yahoo').href = service.href;
+                    document.getElementById('yahoo-img').src =
+                        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(ICONS.yahoo);
+                    break;
+                case 'outlookcom':
+                    console.log('Outlook.com URL:', service.href);
+                    document.getElementById('outlookcom').href = service.href;
+                    document.getElementById('outlookcom-img').src =
+                        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(ICONS.outlookcom);
+                    break;
+                default:
+                    console.warn('Unknown calendar service:', service.key);
+            }
+            console.log(service);
+            console.log(ICONS[service.key]);
+
+        });
 
     </script>
 
