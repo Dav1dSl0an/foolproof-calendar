@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Calendar Widget Example</title>
+</head>
+
+<body>
+    <button id="my-btn" class="my-fancy-button">Save the date 📅</button>
+
+    <a id="button-RAA5wadvjj_btn" href="" target="" data-animation-class=""
+        class="cbutton-RAA5wadvjj express-cta-button custom btn-vp button-hp-40 text-center" style=""
+        aria-label="Join us and book the next call into your calendar here ">
+        <span style="" class="main-heading-group">
+            <span style="margin-right:5px;" class="button-icon-start"></span>
+            <span class="main-heading-button">Join us
+                and book the next call into your
+                calendar here</span>
+            <span style="margin-left:5px;" class="button-icon-end"></span>
+        </span>
+        <!---->
+    </a>
+    <script type="module">
+        import { createCalendar } from './foolproof-calendar.js';
+        import { getNextMeeting } from './foolproof-calendar.js';
+        import { convertString } from './foolproof-calendar.js';
+
+        const TIMEZONE = "America/New_York";
+        const MEETING_DAY = 4;     // Thursday
+        const MEETING_HOUR = 12;   // 12 PM
+        const DURATION_HOURS = 2;  // 2 hours
+
+        const meeting = getNextMeeting(TIMEZONE, MEETING_DAY, MEETING_HOUR, DURATION_HOURS);
+        const widget = createCalendar({
+            data: {
+                title: 'WeeklyTraining Call',
+                start: new Date(convertString(meeting.start.toString())),
+                end: new Date(convertString(meeting.end.toString())),
+                description: 'Weekly Meeting',
+                address: '123 fake street',
+                url: 'https://example.com',
+                timezone: 'America/New_York',
+            },
+            options: {
+                id: 'my-calendar', //will use this if creatng a button
+                class: 'my-custom-class', //will use this if creatng a button
+                button: document.getElementById('button-RAA5wadvjj_btn') //pass an existing button to turn it into a calendar button
+            },
+        });
+
+        document.body.appendChild(widget);
+
+    </script>
+
+</body>
+
+</html>
